@@ -33,3 +33,6 @@ TestGraph.out: TestGraph
 
 test: TestGraph
 	TestGraph
+
+testv: TestGraph
+	valgrind TestGraph
