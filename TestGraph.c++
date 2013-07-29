@@ -174,5 +174,35 @@ TYPED_TEST(InterfaceTest, NumEdges1) {
 	EXPECT_EQ(11, es);
 }
 
+// --- num vertices ---
+
+TYPED_TEST(InterfaceTest, NumVertices1) {
+	typedef typename TestFixture::vertices_size_type vertices_size_type;
+	vertices_size_type vs = num_vertices(this->g);
+	EXPECT_EQ(8, vs);
+}
+
+// --- source ---
+
+TYPED_TEST(InterfaceTest, Source1) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	vertex_descriptor vd = source(this->edAB, this->g);
+	EXPECT_EQ(this->vdA, vd);
+}
+
+// --- target ---
+
+TYPED_TEST(InterfaceTest, Target1) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	vertex_descriptor vd = target(this->edAB, this->g);
+	EXPECT_EQ(this->vdB, vd);
+}
+
+// --- vertex ---
+TYPED_TEST(InterfaceTest, Vertex1) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	vertex_descriptor vd = vertex(0, this->g);
+	EXPECT_EQ(this->vdA, vd);
+}
 
 // TODO make interface tests for Graph and adjacency_list<setS, vecS, directedS>
