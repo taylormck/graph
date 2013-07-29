@@ -108,11 +108,34 @@ protected:
 TYPED_TEST_CASE(InterfaceTest, graphs);
 
 // --- add_edge ---
+
 TYPED_TEST(InterfaceTest, AddEdgeTest1) {
 	typedef typename TestFixture::edge_descriptor edge_descriptor;
 	std::pair<edge_descriptor, bool> p = add_edge(this->vdA, this->vdB, this->g);
 	EXPECT_EQ(this->edAB, p.first);
 	EXPECT_FALSE(p.second);
 }
+
+// --- ajacent_vertices ---
+
+TYPED_TEST(InterfaceTest, AdjacentVerticesTest1) {
+	typedef typename TestFixture::adjacency_iterator adjacency_iterator;
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	std::pair<adjacency_iterator, adjacency_iterator> p = adjacent_vertices(this->vdA, this->g);
+	adjacency_iterator b = p.first;
+	adjacency_iterator e = p.second;
+
+	ASSERT_NE(e, b);
+	if (b != e) {
+	    vertex_descriptor vd = *b;
+	    ASSERT_EQ(this->vdB, vd);
+	}
+	++b;
+	if (b != e) {
+	    vertex_descriptor vd = *b;
+	    ASSERT_EQ(this->vdC, vd);
+	}
+}
+
 
 // TODO make interface tests for Graph and adjacency_list<setS, vecS, directedS>
