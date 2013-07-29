@@ -125,16 +125,53 @@ TYPED_TEST(InterfaceTest, AdjacentVerticesTest1) {
 	adjacency_iterator b = p.first;
 	adjacency_iterator e = p.second;
 
-	ASSERT_NE(e, b);
+	EXPECT_NE(e, b);
 	if (b != e) {
 	    vertex_descriptor vd = *b;
-	    ASSERT_EQ(this->vdB, vd);
+	    EXPECT_EQ(this->vdB, vd);
 	}
 	++b;
 	if (b != e) {
 	    vertex_descriptor vd = *b;
-	    ASSERT_EQ(this->vdC, vd);
+	    EXPECT_EQ(this->vdC, vd);
 	}
+}
+
+// --- edge ---
+
+TYPED_TEST(InterfaceTest, EdgeTest1) {
+	typedef typename TestFixture::edge_descriptor edge_descriptor;
+	std::pair<edge_descriptor, bool> p = edge(this->vdA, this->vdB, this->g);
+	EXPECT_EQ(this->edAB, p.first);
+	EXPECT_TRUE(p.second);
+}
+
+// --- edges ---
+
+TYPED_TEST(InterfaceTest, EdgesTest1) {
+	typedef typename TestFixture::edge_descriptor edge_descriptor;
+	typedef typename TestFixture::edge_iterator edge_iterator;
+	std::pair<edge_iterator, edge_iterator> p = edges(this->g);
+	edge_iterator                           b = p.first;
+	edge_iterator                           e = p.second;
+	EXPECT_NE(e, b);
+	if (b != e) {
+		edge_descriptor ed = *b;
+		EXPECT_EQ(this->edAB, ed);
+	}
+	++b;
+	if (b != e) {
+		edge_descriptor ed = *b;
+		EXPECT_EQ(this->edAC, ed);
+	}
+}
+
+// --- num_edges ---
+
+TYPED_TEST(InterfaceTest, NumEdges1) {
+	typedef typename TestFixture::edges_size_type edges_size_type;
+	edges_size_type es = num_edges(this->g);
+	EXPECT_EQ(11, es);
 }
 
 
