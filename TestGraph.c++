@@ -3,6 +3,7 @@
 #include <iterator> // ostream_iterator
 #include <sstream>  // ostringstream
 #include <utility>  // pair
+#include <string>   // string
 
 #include "boost/graph/adjacency_list.hpp"  // adjacency_list
 #include "boost/graph/topological_sort.hpp"// topological_sort
@@ -199,10 +200,46 @@ TYPED_TEST(InterfaceTest, Target1) {
 }
 
 // --- vertex ---
+
 TYPED_TEST(InterfaceTest, Vertex1) {
 	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
 	vertex_descriptor vd = vertex(0, this->g);
 	EXPECT_EQ(this->vdA, vd);
+}
+
+// --- vertices ---
+
+TYPED_TEST(InterfaceTest, Vertices1) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	typedef typename TestFixture::vertex_iterator vertex_iterator;
+	std::pair<vertex_iterator, vertex_iterator> p = vertices(this->g);
+	vertex_iterator                             b = p.first;
+	vertex_iterator                             e = p.second;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		vertex_descriptor vd = *b;
+		EXPECT_EQ(this->vdA, vd);
+	}
+	++b;
+	if (b != e) {
+		vertex_descriptor vd = *b;
+		EXPECT_EQ(this->vdB, vd);
+	}
+}
+
+// --- has_cycle ---
+
+TYPED_TEST(InterfaceTest, HasCycle1) {
+	ASSERT_TRUE(has_cycle(this->g));
+}
+
+// --- topological_sort ---
+
+TYPED_TEST(InterfaceTest, TopologicalSort1) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	std::ostringstream out;
+	topological_sort(this->g, std::ostream_iterator<vertex_descriptor>(out, " "));
+	ASSERT_EQ(std::string("2 0 1 "), out.str());
 }
 
 // TODO make interface tests for Graph and adjacency_list<setS, vecS, directedS>
