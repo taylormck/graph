@@ -11,3 +11,14 @@
 *.lai
 *.la
 *.a
+
+# Zip files
+*.zip
+
+# Binaries
+TestGraph
+
+# Eclipse files
+.settings
+.project
+.cproject
