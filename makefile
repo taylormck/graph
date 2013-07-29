@@ -21,7 +21,7 @@ turnin-verify:
 Graph.log:
 	git log > Graph.log
 
-Graph.zip:                 Graph.h Graph.log TestGraph.c++ TestGraph.out
+Graph.zip: Graph.h Graph.log TestGraph.c++ TestGraph.out
 	zip -r Graph.zip html/ Graph.h Graph.log TestGraph.c++ TestGraph.out
 
 TestGraph: Graph.h TestGraph.c++
@@ -29,3 +29,6 @@ TestGraph: Graph.h TestGraph.c++
 
 TestGraph.out: TestGraph
 	valgrind TestGraph > TestGraph.out
+
+test: TestGraph
+	TestGraph
