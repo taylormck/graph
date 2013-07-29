@@ -15,26 +15,42 @@
 #include <utility> // make_pair, pair
 #include <vector>  // vector
 
-#define public private
-#define protected private
+#define private public
+#define protected public
 #define class struct
-
 #include "Graph.h"
 
-/*
-// Useful typedefs
+// These are implementation dependent tests
+// This class contains some typedefs to make the constructor tests more readable
+class ConstructorTest : public testing::Test {
+protected:
+	typedef Graph graph_type;
+	typedef typename graph_type::vertex_descriptor  vertex_descriptor;
+	typedef typename graph_type::edge_descriptor    edge_descriptor;
 
-typedef T                                       graph_type;
+	typedef typename graph_type::vertex_iterator    vertex_iterator;
+	typedef typename graph_type::edge_iterator      edge_iterator;
+	typedef typename graph_type::adjacency_iterator adjacency_iterator;
 
-typedef typename graph_type::vertex_descriptor  vertex_descriptor;
-typedef typename graph_type::edge_descriptor    edge_descriptor;
+	typedef typename graph_type::vertices_size_type vertices_size_type;
+	typedef typename graph_type::edges_size_type    edges_size_type;
+};
 
-typedef typename graph_type::vertex_iterator    vertex_iterator;
-typedef typename graph_type::edge_iterator      edge_iterator;
-typedef typename graph_type::adjacency_iterator adjacency_iterator;
+TEST_F(ConstructorTest, EmptyTest) {
+	ASSERT_TRUE(true);
+}
 
-typedef typename graph_type::vertices_size_type vertices_size_type;
-typedef typename graph_type::edges_size_type    edges_size_type;
-*/
+// TODO make tests for Graph
 
-// Tests here
+// These are interface tests
+typedef testing::Types<Graph, boost::adjacency_list<boost::setS, boost::vecS, boost::directedS> > graphs;
+
+template <typename T>
+class InterfaceTest : public testing::Test {
+protected:
+
+};
+
+TYPED_TEST_CASE(InterfaceTest, graphs);
+
+// TODO make interface tests for Graph and adjacency_list<setS, vecS, directedS>

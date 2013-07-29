@@ -42,10 +42,10 @@ class Graph {
         // --------
 
         /**
-         * <your documentation>
+         * TODO <your documentation>
          */
         friend std::pair<edge_descriptor, bool> add_edge (vertex_descriptor, vertex_descriptor, Graph&) {
-            // <your code>
+            // TODO <your code>
             edge_descriptor ed;
             bool            b;
             return std::make_pair(ed, b);}
@@ -55,10 +55,10 @@ class Graph {
         // ----------
 
         /**
-         * <your documentation>
+         * TODO <your documentation>
          */
         friend vertex_descriptor add_vertex (Graph&) {
-            // <your code>
+            // TODO <your code>
             vertex_descriptor v;
             return v;}
 
@@ -67,10 +67,10 @@ class Graph {
         // -----------------
 
         /**
-         * <your documentation>
+         * TODO <your documentation>
          */
         friend std::pair<adjacency_iterator, adjacency_iterator> adjacent_vertices (vertex_descriptor, const Graph&) {
-            // <your code>
+            // TODO <your code>
             adjacency_iterator b = adjacency_iterator();
             adjacency_iterator e = adjacency_iterator();
             return std::make_pair(b, e);}
@@ -80,10 +80,10 @@ class Graph {
         // ----
 
         /**
-         * <your documentation>
+         * TODO <your documentation>
          */
         friend std::pair<edge_descriptor, bool> edge (vertex_descriptor, vertex_descriptor, const Graph&) {
-            // <your code>
+            // TODO <your code>
             edge_descriptor ed;
             bool            b;
             return std::make_pair(ed, b);}
@@ -93,10 +93,10 @@ class Graph {
         // -----
 
         /**
-         * <your documentation>
+         * TODO <your documentation>
          */
         friend std::pair<edge_iterator, edge_iterator> edges (const Graph&) {
-            // <your code>
+            // TODO <your code>
             edge_iterator b;
             edge_iterator e;
             return std::make_pair(b, e);}
@@ -106,10 +106,10 @@ class Graph {
         // ---------
 
         /**
-         * <your documentation>
+         * TODO <your documentation>
          */
         friend edges_size_type num_edges (const Graph&) {
-            // <your code>
+            // TODO <your code>
             edges_size_type s;
             return s;}
 
@@ -118,10 +118,10 @@ class Graph {
         // ------------
 
         /**
-         * <your documentation>
+         * TODO <your documentation>
          */
         friend vertices_size_type num_vertices (const Graph&) {
-            // <your code>
+            // TODO <your code>
             vertices_size_type s;
             return s;}
 
@@ -130,10 +130,10 @@ class Graph {
         // ------
 
         /**
-         * <your documentation>
+         * TODO <your documentation>
          */
         friend vertex_descriptor source (edge_descriptor, const Graph&) {
-            // <your code>
+            // TODO <your code>
             vertex_descriptor v;
             return v;}
 
@@ -142,10 +142,10 @@ class Graph {
         // ------
 
         /**
-         * <your documentation>
+         * TODO <your documentation>
          */
         friend vertex_descriptor target (edge_descriptor, const Graph&) {
-            // <your code>
+            // TODO <your code>
             vertex_descriptor v;
             return v;}
 
@@ -154,10 +154,10 @@ class Graph {
         // ------
 
         /**
-         * <your documentation>
+         * TODO <your documentation>
          */
         friend vertex_descriptor vertex (vertices_size_type, const Graph&) {
-            // <your code>
+            // TODO <your code>
             vertex_descriptor vd;
             return vd;}
 
@@ -166,10 +166,10 @@ class Graph {
         // --------
 
         /**
-         * <your documentation>
+         * TODO <your documentation>
          */
         friend std::pair<vertex_iterator, vertex_iterator> vertices (const Graph&) {
-            // <your code>
+            // TODO <your code>
             vertex_iterator b = vertex_iterator();
             vertex_iterator e = vertex_iterator();
             return std::make_pair(b, e);}
@@ -186,10 +186,10 @@ class Graph {
         // -----
 
         /**
-         * <your documentation>
+         * TODO <your documentation>
          */
         bool valid () const {
-            // <your code>
+            // TODO <your code>
             return true;}
 
     public:
@@ -198,10 +198,10 @@ class Graph {
         // ------------
 
         /**
-         * <your documentation>
+         * TODO <your documentation>
          */
         Graph () {
-            // <your code>
+            // TODO <your code>
             assert(valid());}
 
         // Default copy, destructor, and copy assignment
@@ -217,7 +217,7 @@ class Graph {
 /**
  * depth-first traversal
  * three colors
- * <your documentation>
+ * TODO <your documentation>
  */
 template <typename G>
 bool has_cycle (const G& g) {
@@ -230,7 +230,7 @@ bool has_cycle (const G& g) {
 /**
  * depth-first traversal
  * two colors
- * <your documentation>
+ * TODO <your documentation>
  * @throws Boost's not_a_dag exception if has_cycle()
  */
 template <typename G, typename OI>
