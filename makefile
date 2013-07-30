@@ -1,10 +1,12 @@
 all:
-  make Graph.zip
+	make Graph.zip
 
 clean:
 	rm -f Graph.log
 	rm -f Graph.zip
 	rm -f TestGraph
+	rm -f ./*~
+	rm -f *.out
 
 doc: Graph.h
 	doxygen Doxyfile
@@ -25,10 +27,13 @@ Graph.zip: Graph.h Graph.log TestGraph.c++ TestGraph.out
 	zip -r Graph.zip html/ Graph.h Graph.log TestGraph.c++ TestGraph.out
 
 TestGraph: Graph.h TestGraph.c++
-	g++ -pedantic -std=c++0x -Wall TestGraph.c++ -o TestGraph -lgtest -lpthread -lgtest_main
+	g++ -pedantic -std=c++0x -Wall -I/public/linux/include/boost-1_44 TestGraph.c++ -o TestGraph -lgtest -lpthread -lgtest_main
 
 TestGraph.out: TestGraph
 	valgrind TestGraph > TestGraph.out
 
 test: TestGraph
 	TestGraph
+
+testv: TestGraph
+	valgrind TestGraph
