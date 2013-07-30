@@ -245,7 +245,9 @@ class Graph {
  */
 template <typename G>
 bool has_cycle (const G& g) {
-    return true;}
+    // TODO your code
+    return true;
+}
 
 // ----------------
 // topological_sort
@@ -261,11 +263,7 @@ template <typename G, typename OI>
 void topological_sort (const G& g, OI x) {
     if (has_cycle(g))
         throw boost::not_a_dag();
-    *x = 2;
-    ++x;
-    *x = 0;
-    ++x;
-    *x = 1;
-    }
+    // TODO your code
+}
 
 #endif // Graph_h
