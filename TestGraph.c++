@@ -123,6 +123,16 @@ TYPED_TEST(InterfaceTest, AddEdgeTest2) {
 	EXPECT_TRUE(p.second);
 }
 
+TYPED_TEST(InterfaceTest, AddEdgeTest3) {
+	typedef typename TestFixture::edge_descriptor edge_descriptor;
+	std::pair<edge_descriptor, bool> p = add_edge(this->vdA, this->vdH, this->g);
+	ASSERT_TRUE(p.second);
+
+	std::pair<edge_descriptor, bool> p2 = add_edge(this->vdA, this->vdH, this->g);
+	EXPECT_EQ(p.first, p2.first);
+	EXPECT_FALSE(p2.second);
+}
+
 // --- ajacent_vertices ---
 
 TYPED_TEST(InterfaceTest, AdjacentVerticesTest1) {
@@ -132,7 +142,7 @@ TYPED_TEST(InterfaceTest, AdjacentVerticesTest1) {
 	adjacency_iterator b = p.first;
 	adjacency_iterator e = p.second;
 
-	EXPECT_NE(e, b);
+	ASSERT_NE(e, b);
 	if (b != e) {
 	    vertex_descriptor vd = *b;
 	    EXPECT_EQ(this->vdB, vd);
@@ -141,6 +151,52 @@ TYPED_TEST(InterfaceTest, AdjacentVerticesTest1) {
 	if (b != e) {
 	    vertex_descriptor vd = *b;
 	    EXPECT_EQ(this->vdC, vd);
+	}
+}
+
+TYPED_TEST(InterfaceTest, AdjacentVerticesTest2) {
+	typedef typename TestFixture::adjacency_iterator adjacency_iterator;
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	std::pair<adjacency_iterator, adjacency_iterator> p = adjacent_vertices(this->vdA, this->g);
+	adjacency_iterator b = p.first;
+	adjacency_iterator e = p.second;
+
+	ASSERT_NE(e, b);
+	if (b != e) {
+	    vertex_descriptor vd = *b;
+	    EXPECT_EQ(this->vdB, vd);
+	}
+	++b;
+	ASSERT_NE(e, b);
+	if (b != e) {
+	    vertex_descriptor vd = *b;
+	    EXPECT_EQ(this->vdC, vd);
+	}
+	++b;
+	ASSERT_NE(e, b);
+	if (b != e) {
+	    vertex_descriptor vd = *b;
+	    EXPECT_EQ(this->vdE, vd);
+	}
+}
+
+TYPED_TEST(InterfaceTest, AdjacentVerticesTest3) {
+	typedef typename TestFixture::adjacency_iterator adjacency_iterator;
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	std::pair<adjacency_iterator, adjacency_iterator> p = adjacent_vertices(this->vdB, this->g);
+	adjacency_iterator b = p.first;
+	adjacency_iterator e = p.second;
+
+	ASSERT_NE(e, b);
+	if (b != e) {
+	    vertex_descriptor vd = *b;
+	    EXPECT_EQ(this->vdD, vd);
+	}
+	++b;
+	ASSERT_NE(e, b);
+	if (b != e) {
+	    vertex_descriptor vd = *b;
+	    EXPECT_EQ(this->vdE, vd);
 	}
 }
 
