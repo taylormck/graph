@@ -117,6 +117,12 @@ TYPED_TEST(InterfaceTest, AddEdgeTest1) {
 	EXPECT_FALSE(p.second);
 }
 
+TYPED_TEST(InterfaceTest, AddEdgeTest2) {
+	typedef typename TestFixture::edge_descriptor edge_descriptor;
+	std::pair<edge_descriptor, bool> p = add_edge(this->vdA, this->vdH, this->g);
+	EXPECT_TRUE(p.second);
+}
+
 // --- ajacent_vertices ---
 
 TYPED_TEST(InterfaceTest, AdjacentVerticesTest1) {
@@ -238,8 +244,13 @@ TYPED_TEST(InterfaceTest, HasCycle1) {
 TYPED_TEST(InterfaceTest, TopologicalSort1) {
 	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
 	std::ostringstream out;
-	topological_sort(this->g, std::ostream_iterator<vertex_descriptor>(out, " "));
-	ASSERT_EQ(std::string("2 0 1 "), out.str());
+	try {
+		topological_sort(this->g, std::ostream_iterator<vertex_descriptor>(out, " "));
+		ASSERT_TRUE(false);
+	}
+	catch (boost::not_a_dag& e) {
+		ASSERT_TRUE(has_cycle(this->g));
+	}
 }
 
 // TODO make interface tests for Graph and adjacency_list<setS, vecS, directedS>
