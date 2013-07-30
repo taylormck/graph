@@ -428,6 +428,18 @@ TYPED_TEST(InterfaceTest, Vertex1) {
 	EXPECT_EQ(this->vdA, vd);
 }
 
+TYPED_TEST(InterfaceTest, Vertex2) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	vertex_descriptor vd = vertex(1, this->g);
+	EXPECT_EQ(this->vdB, vd);
+}
+
+TYPED_TEST(InterfaceTest, Vertex3) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	vertex_descriptor vd = vertex(2, this->g);
+	EXPECT_EQ(this->vdC, vd);
+}
+
 // --- vertices ---
 
 TYPED_TEST(InterfaceTest, Vertices1) {
@@ -445,6 +457,62 @@ TYPED_TEST(InterfaceTest, Vertices1) {
 	if (b != e) {
 		vertex_descriptor vd = *b;
 		EXPECT_EQ(this->vdB, vd);
+	}
+}
+
+TYPED_TEST(InterfaceTest, Vertices2) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	typedef typename TestFixture::vertex_iterator vertex_iterator;
+	std::pair<vertex_iterator, vertex_iterator> p = vertices(this->g);
+	vertex_iterator                             b = p.first;
+	vertex_iterator                             e = p.second;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		vertex_descriptor vd = *b;
+		EXPECT_EQ(this->vdA, vd);
+	}
+	++b;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		vertex_descriptor vd = *b;
+		EXPECT_EQ(this->vdB, vd);
+	}
+	++b;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		vertex_descriptor vd = *b;
+		EXPECT_EQ(this->vdC, vd);
+	}
+}
+
+TYPED_TEST(InterfaceTest, Vertices3) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	typedef typename TestFixture::vertex_iterator vertex_iterator;
+	std::pair<vertex_iterator, vertex_iterator> p = vertices(this->g);
+	vertex_iterator                             b = p.first;
+	vertex_iterator                             e = p.second;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		vertex_descriptor vd = *b;
+		EXPECT_EQ(this->vdA, vd);
+	}
+	++b;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		vertex_descriptor vd = *b;
+		EXPECT_EQ(this->vdB, vd);
+	}
+	++b;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		vertex_descriptor vd = *b;
+		EXPECT_EQ(this->vdC, vd);
+	}
+	++b;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		vertex_descriptor vd = *b;
+		EXPECT_EQ(this->vdD, vd);
 	}
 }
 
@@ -475,4 +543,17 @@ TYPED_TEST(InterfaceTest, TopologicalSort2) {
 	}
 }
 
+TYPED_TEST(InterfaceTest, TopologicalSort3) {
+	typedef typename TestFixture::graph_type graph_type;
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	std::ostringstream out;
+	graph_type g2;
+	try {
+		topological_sort(this->non_cyclic_graph, std::ostream_iterator<vertex_descriptor>(out, " "));
+		ASSERT_EQ(std::string(""), out.str());
+	}
+	catch (boost::not_a_dag& e) {
+		ASSERT_TRUE(false);
+	}
+}
 // TODO make interface tests for Graph and adjacency_list<setS, vecS, directedS>
