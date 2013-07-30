@@ -111,6 +111,7 @@ protected:
         edFH = add_edge(vdF, vdH, g).first;
         edGH = add_edge(vdG, vdH, g).first;
     }
+
     void SetUpNonCyclic() {
         vdA  = add_vertex(non_cyclic_graph);
         vdB  = add_vertex(non_cyclic_graph);
