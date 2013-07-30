@@ -46,7 +46,7 @@ protected:
 // TODO make tests for Graph
 
 // These are interface tests
-typedef testing::Types</*Graph,*/ boost::adjacency_list<boost::setS, boost::vecS, boost::directedS> > graphs;
+typedef testing::Types<Graph, boost::adjacency_list<boost::setS, boost::vecS, boost::directedS> > graphs;
 
 template <typename T>
 class InterfaceTest : public testing::Test {
