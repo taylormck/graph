@@ -22,3 +22,6 @@ TestGraph
 .settings
 .project
 .cproject
+
+# NFS files
+.nfs*
