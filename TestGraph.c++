@@ -335,6 +335,26 @@ TYPED_TEST(InterfaceTest, NumEdges1) {
 	EXPECT_EQ(11, es);
 }
 
+TYPED_TEST(InterfaceTest, NumEdges2) {
+	typedef typename TestFixture::graph_type graph_type;
+	typedef typename TestFixture::edges_size_type edges_size_type;
+	graph_type g2;
+	edges_size_type es = num_edges(g2);
+	EXPECT_EQ(0, es);
+}
+
+TYPED_TEST(InterfaceTest, NumEdges3) {
+	typedef typename TestFixture::graph_type graph_type;
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	typedef typename TestFixture::edges_size_type edges_size_type;
+	graph_type g2;
+	vertex_descriptor ed1 = add_vertex(g2);
+	vertex_descriptor ed2 = add_vertex(g2);
+	add_edge(ed1, ed2, g2);
+	edges_size_type es = num_edges(g2);
+	EXPECT_EQ(1, es);
+}
+
 // --- num vertices ---
 
 TYPED_TEST(InterfaceTest, NumVertices1) {
@@ -343,9 +363,38 @@ TYPED_TEST(InterfaceTest, NumVertices1) {
 	EXPECT_EQ(8, vs);
 }
 
+TYPED_TEST(InterfaceTest, NumVertices2) {
+	typedef typename TestFixture::graph_type graph_type;
+	typedef typename TestFixture::vertices_size_type vertices_size_type;
+	graph_type g2;
+	vertices_size_type vs = num_vertices(g2);
+	EXPECT_EQ(0, vs);
+}
+
+TYPED_TEST(InterfaceTest, NumVertices3) {
+	typedef typename TestFixture::graph_type graph_type;
+	typedef typename TestFixture::vertices_size_type vertices_size_type;
+	graph_type g2;
+	add_vertex(g2);
+	vertices_size_type vs = num_vertices(g2);
+	EXPECT_EQ(1, vs);
+}
+
 // --- source ---
 
 TYPED_TEST(InterfaceTest, Source1) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	vertex_descriptor vd = source(this->edBD, this->g);
+	EXPECT_EQ(this->vdB, vd);
+}
+
+TYPED_TEST(InterfaceTest, Source2) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	vertex_descriptor vd = source(this->edGH, this->g);
+	EXPECT_EQ(this->vdG, vd);
+}
+
+TYPED_TEST(InterfaceTest, Source3) {
 	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
 	vertex_descriptor vd = source(this->edAB, this->g);
 	EXPECT_EQ(this->vdA, vd);
@@ -357,6 +406,18 @@ TYPED_TEST(InterfaceTest, Target1) {
 	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
 	vertex_descriptor vd = target(this->edAB, this->g);
 	EXPECT_EQ(this->vdB, vd);
+}
+
+TYPED_TEST(InterfaceTest, Target2) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	vertex_descriptor vd = target(this->edBD, this->g);
+	EXPECT_EQ(this->vdD, vd);
+}
+
+TYPED_TEST(InterfaceTest, Target3) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	vertex_descriptor vd = target(this->edGH, this->g);
+	EXPECT_EQ(this->vdH, vd);
 }
 
 // --- vertex ---
