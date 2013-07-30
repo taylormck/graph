@@ -37,6 +37,12 @@ protected:
 	typedef typename graph_type::edges_size_type    edges_size_type;
 };
 
+// --- constructor ---
+// TODO
+
+// --- has cycle ---
+// TODO
+
 // TODO make tests for Graph
 
 // These are interface tests
@@ -60,6 +66,7 @@ protected:
     typedef typename graph_type::edges_size_type    edges_size_type;
 
     graph_type g;
+    graph_type non_cyclic_graph;
 
     vertex_descriptor vdA;
     vertex_descriptor vdB;
@@ -103,6 +110,27 @@ protected:
         edFD = add_edge(vdF, vdD, g).first;
         edFH = add_edge(vdF, vdH, g).first;
         edGH = add_edge(vdG, vdH, g).first;
+    }
+    void SetUpNonCyclic() {
+        vdA  = add_vertex(non_cyclic_graph);
+        vdB  = add_vertex(non_cyclic_graph);
+        vdC  = add_vertex(non_cyclic_graph);
+        vdD  = add_vertex(non_cyclic_graph);
+        vdE  = add_vertex(non_cyclic_graph);
+        vdF  = add_vertex(non_cyclic_graph);
+        vdG  = add_vertex(non_cyclic_graph);
+        vdH  = add_vertex(non_cyclic_graph);
+
+        edAB = add_edge(vdA, vdB, non_cyclic_graph).first;
+        edAC = add_edge(vdA, vdC, non_cyclic_graph).first;
+        edAE = add_edge(vdA, vdE, non_cyclic_graph).first;
+        edBD = add_edge(vdB, vdD, non_cyclic_graph).first;
+        edBE = add_edge(vdB, vdE, non_cyclic_graph).first;
+        edCD = add_edge(vdC, vdD, non_cyclic_graph).first;
+        edDE = add_edge(vdD, vdE, non_cyclic_graph).first;
+        edDF = add_edge(vdD, vdF, non_cyclic_graph).first;
+        edFH = add_edge(vdF, vdH, non_cyclic_graph).first;
+        edGH = add_edge(vdG, vdH, non_cyclic_graph).first;
     }
 };
 
@@ -209,6 +237,19 @@ TYPED_TEST(InterfaceTest, EdgeTest1) {
 	EXPECT_TRUE(p.second);
 }
 
+TYPED_TEST(InterfaceTest, EdgeTest2) {
+	typedef typename TestFixture::edge_descriptor edge_descriptor;
+	std::pair<edge_descriptor, bool> p = edge(this->vdA, this->vdH, this->g);
+	ASSERT_FALSE(p.second);
+}
+
+TYPED_TEST(InterfaceTest, EdgeTest3) {
+	typedef typename TestFixture::edge_descriptor edge_descriptor;
+	std::pair<edge_descriptor, bool> p = edge(this->vdB, this->vdD, this->g);
+	EXPECT_EQ(this->edBD, p.first);
+	EXPECT_TRUE(p.second);
+}
+
 // --- edges ---
 
 TYPED_TEST(InterfaceTest, EdgesTest1) {
@@ -217,15 +258,72 @@ TYPED_TEST(InterfaceTest, EdgesTest1) {
 	std::pair<edge_iterator, edge_iterator> p = edges(this->g);
 	edge_iterator                           b = p.first;
 	edge_iterator                           e = p.second;
-	EXPECT_NE(e, b);
+	ASSERT_NE(e, b);
 	if (b != e) {
 		edge_descriptor ed = *b;
 		EXPECT_EQ(this->edAB, ed);
 	}
 	++b;
+	ASSERT_NE(e, b);
 	if (b != e) {
 		edge_descriptor ed = *b;
 		EXPECT_EQ(this->edAC, ed);
+	}
+}
+
+TYPED_TEST(InterfaceTest, EdgesTest2) {
+	typedef typename TestFixture::edge_descriptor edge_descriptor;
+	typedef typename TestFixture::edge_iterator edge_iterator;
+	std::pair<edge_iterator, edge_iterator> p = edges(this->g);
+	edge_iterator                           b = p.first;
+	edge_iterator                           e = p.second;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		edge_descriptor ed = *b;
+		EXPECT_EQ(this->edAB, ed);
+	}
+	++b;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		edge_descriptor ed = *b;
+		EXPECT_EQ(this->edAC, ed);
+	}
+	++b;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		edge_descriptor ed = *b;
+		EXPECT_EQ(this->edAE, ed);
+	}
+}
+
+TYPED_TEST(InterfaceTest, EdgesTest3) {
+	typedef typename TestFixture::edge_descriptor edge_descriptor;
+	typedef typename TestFixture::edge_iterator edge_iterator;
+	std::pair<edge_iterator, edge_iterator> p = edges(this->g);
+	edge_iterator                           b = p.first;
+	edge_iterator                           e = p.second;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		edge_descriptor ed = *b;
+		EXPECT_EQ(this->edAB, ed);
+	}
+	++b;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		edge_descriptor ed = *b;
+		EXPECT_EQ(this->edAC, ed);
+	}
+	++b;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		edge_descriptor ed = *b;
+		EXPECT_EQ(this->edAE, ed);
+	}
+	++b;
+	ASSERT_NE(e, b);
+	if (b != e) {
+		edge_descriptor ed = *b;
+		EXPECT_EQ(this->edBD, ed);
 	}
 }
 
@@ -289,12 +387,6 @@ TYPED_TEST(InterfaceTest, Vertices1) {
 	}
 }
 
-// --- has_cycle ---
-
-TYPED_TEST(InterfaceTest, HasCycle1) {
-	ASSERT_TRUE(has_cycle(this->g));
-}
-
 // --- topological_sort ---
 
 TYPED_TEST(InterfaceTest, TopologicalSort1) {
@@ -306,6 +398,19 @@ TYPED_TEST(InterfaceTest, TopologicalSort1) {
 	}
 	catch (boost::not_a_dag& e) {
 		ASSERT_TRUE(has_cycle(this->g));
+	}
+}
+
+TYPED_TEST(InterfaceTest, TopologicalSort2) {
+	this->SetUpNonCyclic();
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	std::ostringstream out;
+	try {
+		topological_sort(this->non_cyclic_graph, std::ostream_iterator<vertex_descriptor>(out, " "));
+		ASSERT_EQ(std::string("4 7 5 3 1 2 0 6 "), out.str());
+	}
+	catch (boost::not_a_dag& e) {
+		ASSERT_TRUE(false);
 	}
 }
 
