@@ -15,6 +15,9 @@
 # Zip files
 *.zip
 
+# Boost files
+*.out
+
 # Binaries
 TestGraph
 

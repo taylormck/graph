@@ -6,6 +6,7 @@ clean:
 	rm -f Graph.zip
 	rm -f TestGraph
 	rm -f ./*~
+	rm -f *.out
 
 doc: Graph.h
 	doxygen Doxyfile
