@@ -386,7 +386,10 @@ private:
 
     /**
      * Checks the preconditions of the graph
-     *
+     * Preconditions currently checked
+     * <ul>
+     *     <li>There are no parallel paths</li>
+     * </ul>
      *
      * @return true if the preconditions are met
      *         false otherwise
@@ -394,9 +397,13 @@ private:
      bool valid () const {
         bool result = true;
 
-        // Assert there are no parallel paths
         for (vertex_iterator i = myVertexList.begin(); i != vertex_iterator(myVertexList.end()) && result; ++i) {
-            for (adjacency_iterator j = i.begin(); j != i.end() && result; ++j) {
+            // Assert each list is at least size 1
+            // Every list MUST contain it's identity
+            result = result && (i.end() - i.begin() > 0);
+
+            // Assert there are no parallel paths
+            for (adjacency_iterator j = i.begin() + 1; j != i.end() && result; ++j) {
                 adjacency_list::difference_type count = std::count(i.begin(), i.end(), *j);
                 result = result && (count < 2);
             }
