@@ -267,10 +267,9 @@ public:
      * to vertex u in graph g. For example, if u -> v is an edge in the
      * graph, then v will be in this iterator-range.
      */
-     friend std::pair<adjacency_iterator, adjacency_iterator> adjacent_vertices (vertex_descriptor, const Graph&) {
-        // TODO <your code>
-        adjacency_iterator b = adjacency_iterator();
-        adjacency_iterator e = adjacency_iterator();
+     friend std::pair<adjacency_iterator, adjacency_iterator> adjacent_vertices (vertex_descriptor v, const Graph& g) {
+        adjacency_iterator b = ++(g.myVertexList[v].begin());
+        adjacency_iterator e = g.myVertexList[v].end();
         return std::make_pair(b, e);
     }
 
