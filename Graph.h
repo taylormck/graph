@@ -385,12 +385,16 @@ private:
     // -----
 
     /**
-     * TODO <your documentation>
+     * Checks the preconditions of the graph
+     *
+     *
+     * @return true if the preconditions are met
+     *         false otherwise
      */
      bool valid () const {
-        // TODO <your code>
         bool result = true;
 
+        // Assert there are no parallel paths
         for (vertex_iterator i = myVertexList.begin(); i != vertex_iterator(myVertexList.end()) && result; ++i) {
             for (adjacency_iterator j = i.begin(); j != i.end() && result; ++j) {
                 adjacency_list::difference_type count = std::count(i.begin(), i.end(), *j);
@@ -410,6 +414,7 @@ public:
      * Construct a new Graph
      */
      Graph () {
+        // Nothing to be done but assert preconditions
         assert(valid());
     }
 };
