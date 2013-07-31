@@ -137,6 +137,34 @@ protected:
 
 TYPED_TEST_CASE(InterfaceTest, graphs);
 
+// --- add_vertex ---
+
+TYPED_TEST(InterfaceTest, AddVertexTest1) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	vertex_descriptor p = add_vertex(this->g);
+	EXPECT_EQ(8, p);
+}
+
+TYPED_TEST(InterfaceTest, AddVertexTest2) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	vertex_descriptor p = add_vertex(this->g);
+	ASSERT_EQ(8, p);
+	p = add_vertex(this->g);
+	ASSERT_EQ(9, p);
+}
+
+TYPED_TEST(InterfaceTest, AddVertexTest3) {
+	typedef typename TestFixture::vertex_descriptor vertex_descriptor;
+	vertex_descriptor p = add_vertex(this->g);
+	EXPECT_EQ(8, p);
+	p = add_vertex(this->g);
+	ASSERT_EQ(9, p);
+	p = add_vertex(this->g);
+	ASSERT_EQ(10, p);
+}
+
+// --- add_vertex ---
+
 // --- add_edge ---
 
 TYPED_TEST(InterfaceTest, AddEdgeTest1) {
