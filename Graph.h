@@ -328,18 +328,23 @@ private:
      */
      bool valid () const {
         bool result = true;
+        edges_size_type edgesCounter = 0;
 
         for (vertex_iterator i = myVertexList.begin(); i != vertex_iterator(myVertexList.end()) && result; ++i) {
             // Assert each list is at least size 1
             // Every list MUST contain it's identity as the first element
-            result = (std::distance(i.begin(), i.end()) > 0) &&
-                     (*(i.begin()) == i - myVertexList.begin());
+            result =(std::distance(i.begin(), i.end()) > 0) &&
+                    (*(i.begin()) == i - myVertexList.begin());
+
+            // Assert there are no parallel paths
+            for (adjacency_iterator j = ++i.begin(); j != i.end() && result; ++j) {
+                adjacency_list::difference_type count = std::count(i.begin(), i.end(), *j);
+                result = result && (count < 2);
+                ++edgesCounter;
+            }
         }
 
-        for (edge_iterator i = myEdges.begin(); i != myEdges.end() && result; ++i) {
-            result = myEdges.find(std::make_pair(i->second, i->first)) == myEdges.end();
-        }
-
+        result = result && (edgesCounter == myEdges.size());
         return result;
     }
 
