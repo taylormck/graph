@@ -296,7 +296,6 @@ public:
      * Returns an iterator-range providing access to the edge set of graph g.
      */
      friend std::pair<edge_iterator, edge_iterator> edges (const Graph& g) {
-        // TODO <your code>
         edge_iterator b (g.myVertexList.begin(), ++g.myVertexList.front().begin());
         edge_iterator e (--g.myVertexList.end(), g.myVertexList.back().end());
         assert(g.valid());
