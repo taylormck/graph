@@ -368,10 +368,9 @@ public:
      * Returns an iterator-range providing access to the vertex set of
      * graph g.
      */
-     friend std::pair<vertex_iterator, vertex_iterator> vertices (const Graph&) {
-        // TODO <your code>
-        vertex_iterator b = vertex_iterator();
-        vertex_iterator e = vertex_iterator();
+     friend std::pair<vertex_iterator, vertex_iterator> vertices (const Graph& g) {
+        vertex_iterator b = vertex_iterator(g.myVertexList.begin());
+        vertex_iterator e = vertex_iterator(g.myVertexList.end());
         return std::make_pair(b, e);
     }
 
