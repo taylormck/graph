@@ -23,7 +23,7 @@
 
 // These are implementation dependent tests
 // This class contains some typedefs to make the constructor tests more readable
-class ConstructorTest : public testing::Test {
+class ImplementationTest : public testing::Test {
 protected:
 	typedef Graph graph_type;
 	typedef typename graph_type::vertex_descriptor  vertex_descriptor;
@@ -35,10 +35,34 @@ protected:
 
 	typedef typename graph_type::vertices_size_type vertices_size_type;
 	typedef typename graph_type::edges_size_type    edges_size_type;
+
+	graph_type g;
+
+	void SetUpSmall() {
+		// TODO only if needed
+	}
 };
 
 // --- constructor ---
-// TODO
+TEST_F(ImplementationTest, DefaultConstructor) {
+	ASSERT_EQ(0, g.myVertexList.size());
+}
+
+TEST_F(ImplementationTest, AddEdgeTest1) {
+	vertex_descriptor p = add_vertex(g);
+	EXPECT_EQ(0, p);
+	EXPECT_EQ(1, g.myVertexList.size());
+	EXPECT_EQ(1, g.myVertexList[p].size());
+}
+
+TEST_F(ImplementationTest, AddEdgeTest2) {
+	for (int i = 0; i < 10; i++) {
+		vertex_descriptor p = add_vertex(g);
+		EXPECT_EQ(i, p);
+		EXPECT_EQ(i + 1, g.myVertexList.size());
+		EXPECT_EQ(1, g.myVertexList[p].size());
+	}
+}
 
 // --- has cycle ---
 // TODO
