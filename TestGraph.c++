@@ -187,8 +187,6 @@ TYPED_TEST(InterfaceTest, AddVertexTest3) {
 	ASSERT_EQ(10, p);
 }
 
-// --- add_vertex ---
-
 // --- add_edge ---
 
 TYPED_TEST(InterfaceTest, AddEdgeTest1) {

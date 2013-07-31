@@ -46,6 +46,9 @@ public:
     typedef adjacency_list::const_iterator adjacency_iterator;
 
     class vertex_iterator {
+    private:
+        typedef vertex_list::iterator       vertex_list_iterator;
+        typedef vertex_list::const_iterator const_vertex_list_iterator;
     public:
         typedef std::random_access_iterator_tag iterator_category;
         typedef Graph::vertex_descriptor        value_type;
@@ -74,14 +77,14 @@ public:
             return lhs.myVertex - rhs.myVertex;
         }
     private:
-        vertex_list::const_iterator myVertex;
+        const_vertex_list_iterator myVertex;
 
     public:
         vertex_iterator() :
             myVertex(NULL)
         {}
 
-        vertex_iterator(vertex_list::const_iterator v) :
+        vertex_iterator(const_vertex_list_iterator v) :
             myVertex(v)
         {}
 
@@ -131,6 +134,10 @@ public:
         adjacency_iterator end() {
             return myVertex->end();
         }
+
+        // void push_back (vertex_descriptor v) {
+        //     const_cast<adjacency_list&>(*myVertex).push_back(v);
+        // }
     };
 
     /**
@@ -224,11 +231,16 @@ public:
      * flag will be false. When the flag is false, the returned edge
      * descriptor points to the already existing edge.
      */
-     friend std::pair<edge_descriptor, bool> add_edge (vertex_descriptor, vertex_descriptor, Graph&) {
-        // TODO <your code>
-        edge_descriptor ed;
-        bool            b;
-        return std::make_pair(ed, b);
+     friend std::pair<edge_descriptor, bool> add_edge (vertex_descriptor i, vertex_descriptor j, Graph& g) {
+        edge_descriptor resultEdgeDescriptor = std::make_pair(i , j);
+        for (adjacency_iterator a = g.myVertexList[i].begin(); a != g.myVertexList[i].end(); ++a) {
+            if (*a == j) {
+                return std::make_pair(resultEdgeDescriptor, false);
+            }
+        }
+        g.myVertexList[i].push_back(j);
+        ++g.numEdges;
+        return std::make_pair(resultEdgeDescriptor, true);
     }
 
     // ----------
