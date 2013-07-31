@@ -239,9 +239,11 @@ public:
      * Adds a vertex to the graph and returns the vertex descriptor for the
      * new vertex.
      */
-     friend vertex_descriptor add_vertex (Graph&) {
+     friend vertex_descriptor add_vertex (Graph& g) {
         // TODO <your code>
-        vertex_descriptor v;
+        vertex_descriptor v = g.myVertexList.size();
+        adjacency_list newVertex(1, v);
+        g.myVertexList.push_back(newVertex);
         return v;
     }
 
