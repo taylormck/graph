@@ -334,10 +334,8 @@ public:
     /**
      * Returns the source vertex of edge e.
      */
-     friend vertex_descriptor source (edge_descriptor, const Graph&) {
-        // TODO <your code>
-        vertex_descriptor v;
-        return v;
+     friend vertex_descriptor source (edge_descriptor ed, const Graph& g) {
+        return ed.first;
     }
 
     // ------
@@ -347,10 +345,8 @@ public:
     /**
      * Returns the target vertex of edge e.
      */
-     friend vertex_descriptor target (edge_descriptor, const Graph&) {
-        // TODO <your code>
-        vertex_descriptor v;
-        return v;
+     friend vertex_descriptor target (edge_descriptor ed, const Graph& g) {
+        return ed.second;
     }
 
     // ------
