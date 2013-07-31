@@ -206,7 +206,7 @@ public:
      friend std::pair<edge_descriptor, bool> edge (vertex_descriptor s, vertex_descriptor t, const Graph& g) {
         edge_descriptor ed = std::make_pair(s, t);
         edge_iterator ei = g.myEdges.find(ed);
-        bool b = ei == g.myEdges.end();
+        bool b = ei != g.myEdges.end();
         assert(g.valid());
         return std::make_pair(ed, b);
     }
