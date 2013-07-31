@@ -134,10 +134,6 @@ public:
         adjacency_iterator end() {
             return myVertex->end();
         }
-
-        // void push_back (vertex_descriptor v) {
-        //     const_cast<adjacency_list&>(*myVertex).push_back(v);
-        // }
     };
 
     /**
@@ -189,7 +185,7 @@ public:
         }
 
         edge_iterator& operator ++ () {
-            if(myTarget == mySource.end()) {
+            while(myTarget == mySource.end()) {
                 ++mySource;
                 myTarget = mySource.begin();
             }
@@ -204,7 +200,7 @@ public:
         }
 
         edge_iterator& operator -- () {
-            if(myTarget == mySource.begin()) {
+            while(myTarget == mySource.begin()) {
                 --mySource;
                 myTarget = mySource.end();
             }
@@ -240,6 +236,7 @@ public:
         }
         g.myVertexList[i].push_back(j);
         ++g.numEdges;
+        assert(g.valid());
         return std::make_pair(resultEdgeDescriptor, true);
     }
 
@@ -255,6 +252,7 @@ public:
         vertex_descriptor v = g.myVertexList.size();
         adjacency_list newVertex(1, v);
         g.myVertexList.push_back(newVertex);
+        assert(g.valid());
         return v;
     }
 
@@ -270,6 +268,7 @@ public:
      friend std::pair<adjacency_iterator, adjacency_iterator> adjacent_vertices (vertex_descriptor v, const Graph& g) {
         adjacency_iterator b = ++(g.myVertexList[v].begin());
         adjacency_iterator e = g.myVertexList[v].end();
+        assert(g.valid());
         return std::make_pair(b, e);
     }
 
@@ -285,6 +284,7 @@ public:
      friend std::pair<edge_descriptor, bool> edge (vertex_descriptor s, vertex_descriptor t, const Graph& g) {
         edge_descriptor ed = std::make_pair(s, t);
         bool b = std::find(g.myVertexList[s].begin(), g.myVertexList[s].end(), t) != g.myVertexList[s].end();
+        assert(g.valid());
         return std::make_pair(ed, b);
     }
 
@@ -293,13 +293,13 @@ public:
     // -----
 
     /**
-     * Returns an iterator-range providing access to the edge set of graph
-     * g.
+     * Returns an iterator-range providing access to the edge set of graph g.
      */
-     friend std::pair<edge_iterator, edge_iterator> edges (const Graph&) {
+     friend std::pair<edge_iterator, edge_iterator> edges (const Graph& g) {
         // TODO <your code>
-        edge_iterator b;
-        edge_iterator e;
+        edge_iterator b (g.myVertexList.begin(), ++g.myVertexList.front().begin());
+        edge_iterator e (g.myVertexList.end(), g.myVertexList.back().end());
+        assert(g.valid());
         return std::make_pair(b, e);
     }
 
@@ -311,6 +311,7 @@ public:
      * Returns the number of edges in the graph g.
      */
      friend edges_size_type num_edges (const Graph& g) {
+        assert(g.valid());
         return g.numEdges;
     }
 
@@ -322,6 +323,7 @@ public:
      * Returns the number of vertices in the graph g.
      */
      friend vertices_size_type num_vertices (const Graph& g) {
+        assert(g.valid());
         return g.myVertexList.end() - g.myVertexList.begin();
     }
 
@@ -332,7 +334,8 @@ public:
     /**
      * Returns the source vertex of edge e.
      */
-     friend vertex_descriptor source (edge_descriptor ed, const Graph&) {
+     friend vertex_descriptor source (edge_descriptor ed, const Graph& g) {
+        assert(g.valid());
         return ed.first;
     }
 
@@ -343,7 +346,8 @@ public:
     /**
      * Returns the target vertex of edge e.
      */
-     friend vertex_descriptor target (edge_descriptor ed, const Graph&) {
+     friend vertex_descriptor target (edge_descriptor ed, const Graph& g) {
+        assert(g.valid());
         return ed.second;
     }
 
@@ -355,6 +359,7 @@ public:
      * Returns the nth vertex in the graph's vertex list.
      */
      friend vertex_descriptor vertex (vertices_size_type n, const Graph& g) {
+        assert(g.valid());
         return g.myVertexList[n].front();
     }
 
@@ -369,6 +374,7 @@ public:
      friend std::pair<vertex_iterator, vertex_iterator> vertices (const Graph& g) {
         vertex_iterator b = vertex_iterator(g.myVertexList.begin());
         vertex_iterator e = vertex_iterator(g.myVertexList.end());
+        assert(g.valid());
         return std::make_pair(b, e);
     }
 
