@@ -16,6 +16,7 @@
 #include <utility> // make_pair, pair
 #include <vector>  // vector
 #include <list>    // list
+#include <set>     // set
 
 // operators
 using std::rel_ops::operator!=;
@@ -39,11 +40,11 @@ public:
 private:
     typedef std::list<vertex_descriptor>  adjacency_list;
     typedef std::vector< adjacency_list > vertex_list;
-    // The first entry in each vertex's adjacency list is the identity id
+    typedef std::set< edge_descriptor >  edge_list;
 
 public:
-    // typedef vertex_list::iterator    vertex_iterator;
     typedef adjacency_list::const_iterator adjacency_iterator;
+    typedef edge_list::const_iterator      edge_iterator;
 
     class vertex_iterator {
     private:
@@ -136,85 +137,6 @@ public:
         }
     };
 
-    /**
-     * Iterator over pairs of vertex_descriptors
-     */
-    class edge_iterator {
-    public:
-        typedef std::bidirectional_iterator_tag iterator_category;
-        typedef Graph::edge_descriptor          value_type;
-        typedef std::ptrdiff_t                  difference_type;
-        typedef const value_type*               pointer;
-        typedef const value_type&               reference;
-
-    private:
-        vertex_iterator mySource;
-        adjacency_iterator myTarget;
-        mutable value_type myEdge;
-
-        void setEdge() const {
-            vertex_descriptor source = *mySource;
-            vertex_descriptor target = *myTarget;
-            myEdge = std::make_pair(source, target);
-        }
-
-    public:
-
-        friend bool operator == (const edge_iterator& lhs, const edge_iterator& rhs) {
-            return ((lhs.mySource == rhs.mySource) &&
-                    (lhs.myTarget == rhs.myTarget));
-        }
-
-        edge_iterator() :
-            mySource(),
-            myTarget(NULL)
-        {}
-
-        edge_iterator(vertex_iterator v, adjacency_iterator a) :
-            mySource(v),
-            myTarget(a)
-        {}
-
-        reference operator * () const {
-            setEdge();
-            return myEdge;
-        }
-
-        pointer operator -> () const {
-            return &**this;
-        }
-
-        edge_iterator& operator ++ () {
-            while(myTarget == --mySource.end()) {
-                ++mySource;
-                myTarget = mySource.begin();
-            }
-            ++myTarget;
-            return *this;
-        }
-
-        edge_iterator operator ++ (int) {
-            edge_iterator x = *this;
-            ++(*this);
-            return x;
-        }
-
-        edge_iterator& operator -- () {
-            while(myTarget == mySource.begin()) {
-                --mySource;
-                myTarget = mySource.end();
-            }
-            --myTarget;
-            return *this;
-        }
-
-        edge_iterator operator -- (int) {
-            edge_iterator x = *this;
-            --(*this);
-            return x;
-        }
-    };
-
 public:
     // --------
     // add_edge
@@ -235,7 +157,7 @@ public:
             }
         }
         g.myVertexList[i].push_back(j);
-        ++g.numEdges;
+        g.myEdges.insert(resultEdgeDescriptor);
         assert(g.valid());
         return std::make_pair(resultEdgeDescriptor, true);
     }
@@ -283,7 +205,8 @@ public:
      */
      friend std::pair<edge_descriptor, bool> edge (vertex_descriptor s, vertex_descriptor t, const Graph& g) {
         edge_descriptor ed = std::make_pair(s, t);
-        bool b = std::find(g.myVertexList[s].begin(), g.myVertexList[s].end(), t) != g.myVertexList[s].end();
+        edge_iterator ei = g.myEdges.find(ed);
+        bool b = ei == g.myEdges.end();
         assert(g.valid());
         return std::make_pair(ed, b);
     }
@@ -296,8 +219,8 @@ public:
      * Returns an iterator-range providing access to the edge set of graph g.
      */
      friend std::pair<edge_iterator, edge_iterator> edges (const Graph& g) {
-        edge_iterator b (g.myVertexList.begin(), ++g.myVertexList.front().begin());
-        edge_iterator e (--g.myVertexList.end(), g.myVertexList.back().end());
+        edge_iterator b = g.myEdges.begin();
+        edge_iterator e = g.myEdges.end();
         assert(g.valid());
         return std::make_pair(b, e);
     }
@@ -311,7 +234,7 @@ public:
      */
      friend edges_size_type num_edges (const Graph& g) {
         assert(g.valid());
-        return g.numEdges;
+        return g.myEdges.size();
     }
 
     // ------------
@@ -383,7 +306,9 @@ private:
     // ----
 
     vertex_list myVertexList;
-    edges_size_type numEdges;
+
+    // Turns out, boost just keeps a set of all their edges
+    edge_list  myEdges;
 
     // -----
     // valid
@@ -403,25 +328,18 @@ private:
      */
      bool valid () const {
         bool result = true;
-        edges_size_type edgesCounter = 0;
 
         for (vertex_iterator i = myVertexList.begin(); i != vertex_iterator(myVertexList.end()) && result; ++i) {
             // Assert each list is at least size 1
             // Every list MUST contain it's identity as the first element
-            result = result &&
-                    (std::distance(i.begin(), i.end()) > 0) &&
-                    (*(i.begin()) == i - myVertexList.begin());
-
-
-            // Assert there are no parallel paths
-            for (adjacency_iterator j = ++i.begin(); j != i.end() && result; ++j) {
-                adjacency_list::difference_type count = std::count(i.begin(), i.end(), *j);
-                result = result && (count < 2);
-                ++edgesCounter;
-            }
+            result = (std::distance(i.begin(), i.end()) > 0) &&
+                     (*(i.begin()) == i - myVertexList.begin());
         }
 
-        result = result && (edgesCounter == numEdges);
+        for (edge_iterator i = myEdges.begin(); i != myEdges.end() && result; ++i) {
+            result = myEdges.find(std::make_pair(i->second, i->first)) == myEdges.end();
+        }
+
         return result;
     }
 
@@ -433,9 +351,7 @@ public:
     /**
      * Construct a new Graph
      */
-     Graph () :
-        numEdges(0)
-    {
+     Graph () {
         // Nothing to be done but assert preconditions
         assert(valid());
     }
@@ -453,7 +369,20 @@ public:
 template <typename G>
  bool has_cycle (const G& g) {
     // TODO your code
-    return true;
+    typedef typename G::edge_iterator edge_iterator;
+    typedef typename G::edge_descriptor edge_descriptor;
+
+    bool result;
+    std::pair<edge_iterator, edge_iterator> bounds = edges(g);
+
+    while(bounds.first != bounds.second && !result) {
+        const edge_descriptor& ed = *(bounds.first);
+        std::pair<edge_descriptor, bool> search = edge(target(ed, g), source(ed, g), g);
+        result = search.second;
+        ++bounds.first;
+    }
+
+    return result;
 }
 
 // ----------------
