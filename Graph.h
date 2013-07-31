@@ -185,7 +185,7 @@ public:
         }
 
         edge_iterator& operator ++ () {
-            while(myTarget == mySource.end()) {
+            while(myTarget == --mySource.end()) {
                 ++mySource;
                 myTarget = mySource.begin();
             }
@@ -298,7 +298,7 @@ public:
      friend std::pair<edge_iterator, edge_iterator> edges (const Graph& g) {
         // TODO <your code>
         edge_iterator b (g.myVertexList.begin(), ++g.myVertexList.front().begin());
-        edge_iterator e (g.myVertexList.end(), g.myVertexList.back().end());
+        edge_iterator e (--g.myVertexList.end(), g.myVertexList.back().end());
         assert(g.valid());
         return std::make_pair(b, e);
     }
