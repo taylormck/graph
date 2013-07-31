@@ -388,6 +388,7 @@ private:
      * Checks the preconditions of the graph
      * Preconditions currently checked
      * <ul>
+     *     <li>Every vertex has the identity element</li>
      *     <li>There are no parallel paths</li>
      * </ul>
      *
@@ -399,11 +400,14 @@ private:
 
         for (vertex_iterator i = myVertexList.begin(); i != vertex_iterator(myVertexList.end()) && result; ++i) {
             // Assert each list is at least size 1
-            // Every list MUST contain it's identity
-            result = result && (i.end() - i.begin() > 0);
+            // Every list MUST contain it's identity as the first element
+            result = result &&
+                    (std::distance(i.begin(), i.end()) > 0) &&
+                    (*(i.begin()) == i - myVertexList.begin());
+
 
             // Assert there are no parallel paths
-            for (adjacency_iterator j = i.begin() + 1; j != i.end() && result; ++j) {
+            for (adjacency_iterator j = ++i.begin(); j != i.end() && result; ++j) {
                 adjacency_list::difference_type count = std::count(i.begin(), i.end(), *j);
                 result = result && (count < 2);
             }
