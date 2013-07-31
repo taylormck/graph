@@ -334,10 +334,8 @@ public:
     /**
      * Returns the source vertex of edge e.
      */
-     friend vertex_descriptor source (edge_descriptor, const Graph&) {
-        // TODO <your code>
-        vertex_descriptor v;
-        return v;
+     friend vertex_descriptor source (edge_descriptor ed, const Graph&) {
+        return ed.first;
     }
 
     // ------
@@ -347,10 +345,8 @@ public:
     /**
      * Returns the target vertex of edge e.
      */
-     friend vertex_descriptor target (edge_descriptor, const Graph&) {
-        // TODO <your code>
-        vertex_descriptor v;
-        return v;
+     friend vertex_descriptor target (edge_descriptor ed, const Graph&) {
+        return ed.second;
     }
 
     // ------
@@ -360,10 +356,8 @@ public:
     /**
      * Returns the nth vertex in the graph's vertex list.
      */
-     friend vertex_descriptor vertex (vertices_size_type n, const Graph&) {
-        // TODO <your code>
-        vertex_descriptor vd;
-        return vd;
+     friend vertex_descriptor vertex (vertices_size_type n, const Graph& g) {
+        return g.myVertexList[n].front();
     }
 
     // --------
@@ -374,10 +368,9 @@ public:
      * Returns an iterator-range providing access to the vertex set of
      * graph g.
      */
-     friend std::pair<vertex_iterator, vertex_iterator> vertices (const Graph&) {
-        // TODO <your code>
-        vertex_iterator b = vertex_iterator();
-        vertex_iterator e = vertex_iterator();
+     friend std::pair<vertex_iterator, vertex_iterator> vertices (const Graph& g) {
+        vertex_iterator b = vertex_iterator(g.myVertexList.begin());
+        vertex_iterator e = vertex_iterator(g.myVertexList.end());
         return std::make_pair(b, e);
     }
 
