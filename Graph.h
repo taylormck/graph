@@ -334,7 +334,7 @@ public:
     /**
      * Returns the source vertex of edge e.
      */
-     friend vertex_descriptor source (edge_descriptor ed, const Graph& g) {
+     friend vertex_descriptor source (edge_descriptor ed, const Graph&) {
         return ed.first;
     }
 
@@ -345,7 +345,7 @@ public:
     /**
      * Returns the target vertex of edge e.
      */
-     friend vertex_descriptor target (edge_descriptor ed, const Graph& g) {
+     friend vertex_descriptor target (edge_descriptor ed, const Graph&) {
         return ed.second;
     }
 
@@ -356,10 +356,8 @@ public:
     /**
      * Returns the nth vertex in the graph's vertex list.
      */
-     friend vertex_descriptor vertex (vertices_size_type n, const Graph&) {
-        // TODO <your code>
-        vertex_descriptor vd;
-        return vd;
+     friend vertex_descriptor vertex (vertices_size_type n, const Graph& g) {
+        return g.myVertexList[n].front();
     }
 
     // --------
