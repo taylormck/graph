@@ -240,7 +240,6 @@ public:
      * new vertex.
      */
      friend vertex_descriptor add_vertex (Graph& g) {
-        // TODO <your code>
         vertex_descriptor v = g.myVertexList.size();
         adjacency_list newVertex(1, v);
         g.myVertexList.push_back(newVertex);
