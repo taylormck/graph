@@ -300,10 +300,8 @@ public:
     /**
      * Returns the number of edges in the graph g.
      */
-     friend edges_size_type num_edges (const Graph&) {
-        // TODO <your code>
-        edges_size_type s;
-        return s;
+     friend edges_size_type num_edges (const Graph& g) {
+        return g.numEdges;
     }
 
     // ------------
@@ -411,7 +409,7 @@ private:
             for (adjacency_iterator j = ++i.begin(); j != i.end() && result; ++j) {
                 adjacency_list::difference_type count = std::count(i.begin(), i.end(), *j);
                 result = result && (count < 2);
-                ++edges_size_type;
+                ++edgesCounter;
             }
         }
 
