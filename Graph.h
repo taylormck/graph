@@ -43,7 +43,7 @@ private:
 
 public:
     // typedef vertex_list::iterator    vertex_iterator;
-    typedef adjacency_list::iterator adjacency_iterator;
+    typedef adjacency_list::const_iterator adjacency_iterator;
 
     class vertex_iterator {
     public:
@@ -74,14 +74,14 @@ public:
             return lhs.myVertex - rhs.myVertex;
         }
     private:
-        vertex_list::iterator myVertex;
+        vertex_list::const_iterator myVertex;
 
     public:
         vertex_iterator() :
             myVertex(NULL)
         {}
 
-        vertex_iterator(vertex_list::iterator v) :
+        vertex_iterator(vertex_list::const_iterator v) :
             myVertex(v)
         {}
 
@@ -389,7 +389,16 @@ private:
      */
      bool valid () const {
         // TODO <your code>
-        return true;
+        bool result = true;
+
+        for (vertex_iterator i = myVertexList.begin(); i != vertex_iterator(myVertexList.end()) && result; ++i) {
+            for (adjacency_iterator j = i.begin(); j != i.end() && result; ++j) {
+                adjacency_list::difference_type count = std::count(i.begin(), i.end(), *j);
+                result = result && (count < 2);
+            }
+        }
+
+        return result;
     }
 
 public:
@@ -401,7 +410,6 @@ public:
      * Construct a new Graph
      */
      Graph () {
-        // TODO <your code>
         assert(valid());
     }
 };
