@@ -387,8 +387,9 @@ private:
      * Checks the preconditions of the graph
      * Preconditions currently checked
      * <ul>
-     *     <li>Every vertex has the identity element</li>
+     *     <li>Every vertex has the identity element as the first element</li>
      *     <li>There are no parallel paths</li>
+     *     <li>The member <code>numEdges</code> correctly represents the number of edges in the graph</li>
      * </ul>
      *
      * @return true if the preconditions are met
@@ -396,6 +397,7 @@ private:
      */
      bool valid () const {
         bool result = true;
+        edges_size_type edgesCounter = 0;
 
         for (vertex_iterator i = myVertexList.begin(); i != vertex_iterator(myVertexList.end()) && result; ++i) {
             // Assert each list is at least size 1
@@ -409,9 +411,11 @@ private:
             for (adjacency_iterator j = ++i.begin(); j != i.end() && result; ++j) {
                 adjacency_list::difference_type count = std::count(i.begin(), i.end(), *j);
                 result = result && (count < 2);
+                ++edges_size_type;
             }
         }
 
+        result = result && (edgesCounter == numEdges);
         return result;
     }
 
