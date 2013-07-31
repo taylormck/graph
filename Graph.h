@@ -313,10 +313,8 @@ public:
     /**
      * Returns the number of vertices in the graph g.
      */
-     friend vertices_size_type num_vertices (const Graph&) {
-        // TODO <your code>
-        vertices_size_type s;
-        return s;
+     friend vertices_size_type num_vertices (const Graph& g) {
+        return g.myVertexList.end() - g.myVertexList.begin();
     }
 
     // ------
@@ -379,6 +377,7 @@ private:
     // ----
 
     vertex_list myVertexList;
+    edges_size_type numEdges;
 
     // -----
     // valid
@@ -424,7 +423,9 @@ public:
     /**
      * Construct a new Graph
      */
-     Graph () {
+     Graph () :
+        numEdges(0)
+    {
         // Nothing to be done but assert preconditions
         assert(valid());
     }
