@@ -15,6 +15,9 @@
 #include <cstddef> // size_t
 #include <utility> // make_pair, pair
 #include <vector>  // vector
+#include <list>    // list
+#include <set>     // set
+#include <queue>   // priority_queue
 
 #define private public
 #define protected public

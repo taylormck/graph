@@ -17,6 +17,7 @@
 #include <vector>  // vector
 #include <list>    // list
 #include <set>     // set
+#include <queue>   // priority_queue
 
 // operators
 using std::rel_ops::operator!=;
@@ -369,10 +370,12 @@ public:
 /**
  * depth-first traversal
  * three colors
- * TODO <your documentation>
+ *
+ * @return true if g has a cycle
+ *         false otherwise
  */
 template <typename G>
- bool has_cycle (const G& g) {
+bool has_cycle (const G& g) {
     // TODO your code
     typedef typename G::edge_iterator edge_iterator;
     typedef typename G::edge_descriptor edge_descriptor;
@@ -386,6 +389,8 @@ template <typename G>
         result = search.second;
         ++bounds.first;
     }
+
+    // TODO doesn't check for non-immediate cycles
 
     return result;
 }
@@ -401,10 +406,63 @@ template <typename G>
  * @throws Boost's not_a_dag exception if has_cycle()
  */
 template <typename G, typename OI>
- void topological_sort (const G& g, OI x) {
+void topological_sort (const G& g, OI x) {
     if (has_cycle(g))
         throw boost::not_a_dag();
+
     // TODO your code
+    // --- typedefs ---
+    typedef typename G::vertex_descriptor vertex_descriptor;
+    typedef typename G::vertices_size_type vertices_size_type;
+    typedef typename G::vertex_list vertex_list;
+    typedef typename G::vertex_iterator vertex_iterator;
+    typedef typename G::edge_list edge_list;
+    typedef typename G::edge_iterator edge_iterator;
+    typedef typename G::adjacency_list adjacency_list;
+    typedef typename G::adjacency_iterator adjacency_iterator;
+
+    typedef std::list<vertex_descriptor> linked_list;
+    typedef typename linked_list::iterator linked_list_iterator;
+    typedef typename std::pair< vertex_descriptor, linked_list > vertex_pair;
+    typedef typename std::vector< vertex_pair > pair_vector;
+    typedef typename pair_vector::iterator vector_iterator;
+
+    typedef std::priority_queue<vertex_descriptor,
+                                std::vector<vertex_descriptor>,
+                                std::greater<vertex_descriptor> >
+                                min_priority_queue;
+
+    pair_vector v;
+
+    std::pair<vertex_iterator, vertex_iterator> vertexBounds = vertices(g);
+    while (vertexBounds.first != vertexBounds.second) {
+        const vertex_descriptor& vd = *(vertexBounds.first);
+        std::pair<adjacency_iterator, adjacency_iterator> ad = adjacent_vertices(vd, g);
+        v.push_back(std::make_pair(vd, linked_list(ad.first, ad.second)));
+        ++vertexBounds.first;
+    }
+
+    min_priority_queue q;
+
+    while(!v.empty() || !q.empty()) {
+        for(vector_iterator i = v.begin(); i != v.end();) {
+            if(i->second.size() == 0) {
+                q.push(i->first);
+                i = v.erase(i);
+            }
+            else
+                ++i;
+        }
+
+        assert(!q.empty());
+
+        vertex_descriptor nextVertex = q.top();
+        *x++ = nextVertex;
+        q.pop();
+        for(vector_iterator i = v.begin(); i != v.end(); ++i) {
+            i->second.remove(nextVertex);
+        }
+    }
 }
 
 #endif // Graph_h
