@@ -1,5 +1,5 @@
 all:
-	make Graph.zip
+	make TestGraph
 
 clean:
 	rm -f Graph.log
