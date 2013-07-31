@@ -282,10 +282,9 @@ public:
      * one such edge and true. If there are no edges between u and v, return
      * a pair with an arbitrary edge descriptor and false.
      */
-     friend std::pair<edge_descriptor, bool> edge (vertex_descriptor, vertex_descriptor, const Graph&) {
-        // TODO <your code>
-        edge_descriptor ed;
-        bool            b;
+     friend std::pair<edge_descriptor, bool> edge (vertex_descriptor s, vertex_descriptor t, const Graph& g) {
+        edge_descriptor ed = std::make_pair(s, t);
+        bool b = std::find(g.myVertexList[s].begin(), g.myVertexList[s].end(), t) != g.myVertexList[s].end();
         return std::make_pair(ed, b);
     }
 
