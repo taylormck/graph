@@ -18,6 +18,7 @@
 #include <list>    // list
 #include <set>     // set
 #include <queue>   // priority_queue
+#include <map>     // map
 
 // operators
 using std::rel_ops::operator!=;
@@ -368,6 +369,34 @@ public:
 // ---------
 
 /**
+ * Recurse through the graph, checking every path to see if we
+ * can hit the same vertex twice
+ *
+ * @return true if there is a cycle from v onward
+ *         false otherwise
+ */
+template <typename G>
+bool has_cycle_helper (const G& g, std::set<typename G::vertex_descriptor>& m, typename G::vertex_descriptor v) {
+    typedef typename G::vertex_descriptor vertex_descriptor;
+    typedef typename G::vertex_iterator vertex_iterator;
+    typedef typename G::edge_iterator edge_iterator;
+    typedef typename G::adjacency_iterator adjacency_iterator;
+
+    if (m.find(v) != m.end())
+        return true;
+
+    m.insert(v);
+    std::pair<adjacency_iterator, adjacency_iterator> adjs = adjacent_vertices(v, g);
+    while (adjs.first != adjs.second) {
+        if (has_cycle_helper(g, m, *(adjs.first)))
+            return true;
+        ++adjs.first;
+    }
+    m.erase(v);
+    return false;
+}
+
+/**
  * depth-first traversal
  * three colors
  *
@@ -376,23 +405,18 @@ public:
  */
 template <typename G>
 bool has_cycle (const G& g) {
-    // TODO your code
-    typedef typename G::edge_iterator edge_iterator;
-    typedef typename G::edge_descriptor edge_descriptor;
+    typedef typename G::vertex_descriptor vertex_descriptor;
+    typedef typename G::vertex_iterator vertex_iterator;
+    std::set<vertex_descriptor> m;
+    std::pair<vertex_iterator, vertex_iterator> bounds = vertices(g);
 
-    bool result;
-    std::pair<edge_iterator, edge_iterator> bounds = edges(g);
+    // Empty graphs aren't cyclical
+    if (bounds.first == bounds.second)
+        return false;
 
-    while(bounds.first != bounds.second && !result) {
-        const edge_descriptor& ed = *(bounds.first);
-        std::pair<edge_descriptor, bool> search = edge(target(ed, g), source(ed, g), g);
-        result = search.second;
-        ++bounds.first;
-    }
+    vertex_descriptor start = *(bounds.first);
 
-    // TODO doesn't check for non-immediate cycles
-
-    return result;
+    return has_cycle_helper(g, m, start);
 }
 
 // ----------------

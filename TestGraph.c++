@@ -18,6 +18,7 @@
 #include <list>    // list
 #include <set>     // set
 #include <queue>   // priority_queue
+#include <map>     // map
 
 #define private public
 #define protected public
